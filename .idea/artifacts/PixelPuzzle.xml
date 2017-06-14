@@ -1,0 +1,33 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="PixelPuzzle">
+    <output-path>$PROJECT_DIR$/out/artifacts/PixelPuzzle</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="com.pansmileSoftware.pixelPuzzle.app.Puzzle" />
+        <option name="description" value="" />
+        <option name="height" value="810" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="icons">
+          <JavaFxApplicationIcons>
+            <option name="linuxIcon" value="$PROJECT_DIR$/src/main/res/icon/PixelPuzzle.png.icns" />
+            <option name="macIcon" value="$PROJECT_DIR$/src/main/res/icon/PixelPuzzle.png.icns" />
+            <option name="windowsIcon" value="$PROJECT_DIR$/src/main/res/icon/PixelPuzzle.png.icns" />
+          </JavaFxApplicationIcons>
+        </option>
+        <option name="nativeBundle" value="all" />
+        <option name="title" value="PixelPuzzle" />
+        <option name="vendor" value="pansmileSoftware" />
+        <option name="version" value="2.0" />
+        <option name="width" value="720" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="PixelPuzzle.jar">
+        <element id="module-output" name="PixelPuzzle" />
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
