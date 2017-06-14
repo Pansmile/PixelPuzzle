@@ -4,6 +4,9 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.image.WritableImage;
 
+/**
+ * An instance of this class keeps data all about single puzzle's part.
+ */
 public class Square {
     private WritableImage image;
     private double fullWidth;
@@ -18,8 +21,6 @@ public class Square {
     private Bounds bounds;
     private int sideSize;
 
-
-
     public Square(WritableImage image, int number, int sideSize) {
         this.image = image;
         initialNumber = number;
@@ -29,7 +30,6 @@ public class Square {
         this.sideSize = sideSize;
 
         moveToNumber(number, sideSize, 0);
-
     }
 
     //Computing layout position of a square on canvas.
@@ -62,7 +62,7 @@ public class Square {
     }
 
     //Defining if the Empty Square is a neighbour of current square;
-    public boolean canBeMoved(int numberOfEmpty, int sideSize) {
+    private boolean canBeMoved(int numberOfEmpty, int sideSize) {
         double[] layoutOfEmpty = getXY(numberOfEmpty, sideSize);
         double currentLayoutIndex, emptyLayoutIndex;
         if (positionX == layoutOfEmpty[0]) {
@@ -75,51 +75,7 @@ public class Square {
             return false;
         }
 
-        if ( currentLayoutIndex - width == emptyLayoutIndex || currentLayoutIndex + width == emptyLayoutIndex) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public double getPositionX() {
-        return positionX;
-    }
-
-    public double getPositionY() {
-        return positionY;
-    }
-
-    public WritableImage getImage() {
-        return image;
-    }
-
-    public void setEmpty(boolean isEmpty) {
-        this.isEmpty = isEmpty;
-    }
-    public boolean isOnInitialPlace() {
-        return initialNumber == currentNumber;
-    }
-    public boolean isEmpty() {
-        return isEmpty;
-    }
-
-
-
-    public int getInitialNumber() {
-        return initialNumber;
-    }
-
-    public int getCurrentNumber() {
-        return currentNumber;
-    }
-
-    public Bounds getBounds() {
-        return bounds;
-    }
-
-    public double getWidth() {
-        return width;
+        return currentLayoutIndex - width == emptyLayoutIndex || currentLayoutIndex + width == emptyLayoutIndex;
     }
 
     public static void  move(Square square, Square emptySquare) {
@@ -134,5 +90,41 @@ public class Square {
         }
     }
 
+    public double getPositionX() {
+        return positionX;
+    }
+    public double getPositionY() {
+        return positionY;
+    }
+
+    public WritableImage getImage() {
+        return image;
+    }
+
+    private void setEmpty(boolean isEmpty) {
+        this.isEmpty = isEmpty;
+    }
+    public boolean isEmpty() {
+        return isEmpty;
+    }
+
+    public boolean isOnInitialPlace() {
+        return initialNumber == currentNumber;
+    }
+
+    public int getInitialNumber() {
+        return initialNumber;
+    }
+    public int getCurrentNumber() {
+        return currentNumber;
+    }
+
+    public Bounds getBounds() {
+        return bounds;
+    }
+
+    public double getWidth() {
+        return width;
+    }
 
 }

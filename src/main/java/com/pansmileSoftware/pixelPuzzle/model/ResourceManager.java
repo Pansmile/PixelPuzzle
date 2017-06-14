@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
 
-
+/**
+ * This class takes care about all necessary resources.
+ */
 public class ResourceManager {
     private static Image image;
     private static InputStream file;
@@ -26,13 +28,6 @@ public class ResourceManager {
     private static boolean[] isPlaying = new boolean[9];
     private static int previousNumber;
 
-
-    /**
-     *
-     * @param file an image file from disk.
-     * @param requestedWidth width and height of image.
-     * @throws IOException in c
-     */
     public static void loadImage(InputStream file, int requestedWidth) throws IOException {
         ResourceManager.file = file;
         image = new Image(file, requestedWidth, requestedWidth, false, false);
@@ -40,16 +35,13 @@ public class ResourceManager {
         lastSideSize = sideSizeProperty.get();
     }
 
+    public static void scaleImage(int requestedWidth) throws IOException {
+        loadImage(file, requestedWidth);
+    }
+
     public static Image getImage() throws NullPointerException {
         return image;
     }
-
-
-
-    public static IntegerProperty getSideSizeProperty() {
-        return sideSizeProperty;
-    }
-
 
     public static Square[] getSquares() {
         if (squares == null || sideSizeProperty.get() != lastSideSize) {
@@ -57,6 +49,19 @@ public class ResourceManager {
             lastSideSize = sideSizeProperty.get();
         }
         return squares;
+    }
+
+    public static void initPlayers() {
+        players = new MediaPlayer[9];
+        for (int i = 0; i < 9; i++) {
+            players[i] = new MediaPlayer(new Media(Puzzle.class.getResource("/sounds/" + i + ".wav").toExternalForm()));
+            if (i == 8) {
+                players[i].setVolume(0.2);
+            } else {
+                players[i].setVolume(0.1);
+            }
+        }
+        previousNumber = 0;
     }
 
     public static void playRandom() {
@@ -104,20 +109,7 @@ public class ResourceManager {
         }
     }
 
-    public static void initPlayers() {
-        players = new MediaPlayer[9];
-        for (int i = 0; i < 9; i++) {
-            players[i] = new MediaPlayer(new Media(Puzzle.class.getResource("/sounds/" + i + ".wav").toExternalForm()));
-            if (i == 8) {
-                players[i].setVolume(0.2);
-            } else {
-                players[i].setVolume(0.1);
-            }
-        }
-        previousNumber = 0;
-    }
-
-    public static void scaleImage(int requestedWidth) throws IOException {
-        loadImage(file, requestedWidth);
+    public static IntegerProperty getSideSizeProperty() {
+        return sideSizeProperty;
     }
 }

@@ -23,94 +23,50 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 
-
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by studio on 12.06.17.
+ * This class controls the behaviour of the app.
  */
 public class RootController {
     private boolean isStarted = false;
     private boolean isDefaultImage = true;
 
-
-    @FXML
-    private Button multiFuncBttn;
     @FXML
     private Spinner<Integer> sideSizeSpnr;
     @FXML
     private Spinner<Integer> shuffleStepSpnr;
     @FXML
-    private StackPane viewPane;
-    @FXML
     private Canvas canvas;
 
-
-
-    public RootController(){
-
-    }
-
+    public RootController(){}
 
     @FXML
     public void initialize() {
-        sideSizeSpnr.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(2, 10, 3));
-        shuffleStepSpnr.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1));
-
-
+        sideSizeSpnr.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                2, 10, 3));
+        shuffleStepSpnr.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                1, 10, 1));
 
         ResourceManager.getSideSizeProperty().bind(sideSizeSpnr.valueProperty());
-        sideSizeSpnr.valueProperty().addListener(new ChangeListener<Integer>() {
-            @Override
-            public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-                if (sideSizeSpnr.getValue() == 7) {
-                    try {
-                        ResourceManager.scaleImage(721);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+        sideSizeSpnr.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (sideSizeSpnr.getValue() == 7) {
+                try {
+                    ResourceManager.scaleImage(721);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                if (isStarted) {
-                    shuffleSquares();
-                }
+            }
+            if (isStarted) {
+                shuffleSquares();
             }
         });
 
-
     }
-
-    public Button getMultiFuncBttn() {
-        return multiFuncBttn;
-    }
-
-    public Spinner<Integer> getSideSizeSpnr() {
-        return sideSizeSpnr;
-    }
-
-    public Spinner<Integer> getShuffleStepSpnr() {
-        return shuffleStepSpnr;
-    }
-
-    public Pane getViewPane() {
-        return viewPane;
-    }
-
-
-
-
-
-    public void start(MouseEvent event) {
-        isStarted = true;
-        shuffleSquares();
-    }
-
 
     @FXML
     public void mouseDragDropped(DragEvent dragEvent) {
@@ -129,7 +85,6 @@ public class RootController {
             dragEvent.setDropCompleted(true);
         }
         dragEvent.consume();
-        getMultiFuncBttn().setDisable(false);
     }
 
     @FXML
@@ -147,6 +102,32 @@ public class RootController {
         } else {
             e.consume();
         }
+    }
+
+    @FXML
+    public void move(MouseEvent event) {
+        if (isStarted) {
+            Square[] squares = ResourceManager.getSquares();
+            for (Square square : ResourceManager.getSquares()) {
+                Bounds bounds = square.getBounds();
+
+                if (bounds.contains(event.getSceneX(), event.getSceneY())) {
+                    Square.move(square, squares[squares.length -1]);
+                    ResourceManager.playRandom();
+                    break;
+                }
+            }
+            if (isComplete()) {
+                isStarted = false;
+                ResourceManager.playFinal();
+            }
+            draw();
+        }
+    }
+
+    public void start(MouseEvent event) {
+        isStarted = true;
+        shuffleSquares();
     }
 
     private void shuffleSquares() {
@@ -176,30 +157,6 @@ public class RootController {
         draw();
     }
 
-    @FXML
-    public void move(MouseEvent event) {
-        if (isStarted) {
-            Square[] squares = ResourceManager.getSquares();
-            for (Square square : ResourceManager.getSquares()) {
-                Bounds bounds = square.getBounds();
-
-                if (bounds.contains(event.getSceneX(), event.getSceneY())) {
-                    Square.move(square, squares[squares.length -1]);
-                    ResourceManager.playRandom();
-                    break;
-                }
-            }
-
-            if (isComplete()) {
-                isStarted = false;
-                ResourceManager.playFinal();
-            }
-            draw();
-        }
-
-
-    }
-
     private boolean isShuffled() {
         boolean isShuffled = true;
         for (Square square : ResourceManager.getSquares()) {
@@ -208,7 +165,6 @@ public class RootController {
                 break;
             }
         }
-
         return isShuffled;
     }
 
@@ -216,12 +172,15 @@ public class RootController {
         GraphicsContext context = canvas.getGraphicsContext2D();
         for (Square square : ResourceManager.getSquares()) {
             WritableImage image;
+            double x = square.getPositionX();
+            double y = square.getPositionY();
+            double width = square.getWidth();
             if (square.isEmpty() && isStarted) {
                 if (isDefaultImage) {
                    double tmpWidth = ResourceManager.getImage().getWidth()/ResourceManager.getSideSizeProperty().get();
                      Image empty = new Image(Puzzle.class.getResourceAsStream("/images/empty.png"),
                             tmpWidth, tmpWidth, true, false);
-                    context.drawImage(empty,square.getPositionX(), square.getPositionY(), square.getWidth(), square.getWidth());
+                    context.drawImage(empty, x, y, width, width);
 
                 } else {
                     image = new WritableImage((int)square.getWidth(),(int) square.getWidth());
@@ -230,13 +189,12 @@ public class RootController {
                             image.getPixelWriter().setColor(j, i, Color.WHITE);
                         }
                     }
-                    context.drawImage(image, square.getPositionX(), square.getPositionY(), square.getWidth(), square.getWidth());
+                    context.drawImage(image, x, y, width, width);
                 }
 
             } else {
                 image = square.getImage();
-                context.drawImage(image, square.getPositionX(), square.getPositionY(), square.getWidth(), square.getWidth());
-
+                context.drawImage(image, x, y, width, width);
             }
         }
     }
@@ -249,7 +207,6 @@ public class RootController {
                 break;
             }
         }
-
         return isComplete;
     }
 
@@ -259,7 +216,4 @@ public class RootController {
         }
     }
 
-    public void setDefaultImage(boolean isDefault) {
-        this.isDefaultImage = isDefault;
-    }
 }

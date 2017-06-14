@@ -7,23 +7,16 @@ import javafx.scene.image.WritableImage;
 
 
 /**
- * Created by studio on 01.06.17.
+ * This class creates an Array of Squares which keeps all data of puzzle's parts.
  */
 public class SquaresCreator {
 
-
-    private SquaresCreator() {
-
-    }
+    private SquaresCreator() {}
 
     public static Square[] createSquares(Image image, int sideSize) {
-
-
         double sideLength = image.getWidth()/sideSize;
-
         Square[] squares = new Square[sideSize * sideSize];
         PixelReader reader = image.getPixelReader();
-
 
         int offsetX = 0;
         int offsetY = 0;
@@ -42,9 +35,7 @@ public class SquaresCreator {
             offsetX = 0;
             offsetY += sideLength;
         }
-
         return squares;
-
     }
 
 }
