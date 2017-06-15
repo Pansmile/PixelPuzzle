@@ -28,6 +28,7 @@
           <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
         </element>
       </element>
+      <element id="library" level="project" name="fontawesomefx-8.9" />
     </root>
   </artifact>
 </component>
