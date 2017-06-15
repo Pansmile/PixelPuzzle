@@ -29,18 +29,20 @@ public class ResourceManager {
     private static MediaPlayer[] players;
     private static boolean[] isPlaying = new boolean[9];
     private static int previousNumber;
+    private static InputStream imageStream;
 
     public static void loadImage(InputStream inputStream, int requestedWidth) throws IOException {
-        InputStream stream;
+        imageStream = inputStream;
         if (imageBytes == null || imageChanged) {
             imageBytes = new byte[inputStream.available()];
-            inputStream.read(imageBytes);
+            imageStream.read(imageBytes);
             imageChanged = false;
+            imageStream = null;
         }
-        if (inputStream == null || inputStream.available() == 0) {
-            stream = new ByteArrayInputStream(imageBytes);
+        if ((inputStream != null && inputStream.available() == 0) || inputStream == null) {
+            imageStream = new ByteArrayInputStream(imageBytes);
         } else {
-            stream = inputStream;
+            imageStream = inputStream;
         }
         int finalWidthHeight;
         if (sideSizeProperty.get() == 7) {
@@ -49,7 +51,7 @@ public class ResourceManager {
             finalWidthHeight = requestedWidth;
         }
 
-        image = new Image(stream, finalWidthHeight, finalWidthHeight, false, false);
+        image = new Image(imageStream, finalWidthHeight, finalWidthHeight, false, false);
         squares = SquaresCreator.createSquares(image,sideSizeProperty.get());
         lastSideSize = sideSizeProperty.get();
     }
