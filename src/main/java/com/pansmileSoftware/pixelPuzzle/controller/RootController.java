@@ -4,6 +4,7 @@ import com.pansmileSoftware.pixelPuzzle.app.Puzzle;
 import com.pansmileSoftware.pixelPuzzle.model.ResourceManager;
 import com.pansmileSoftware.pixelPuzzle.model.Square;
 
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -35,6 +36,10 @@ public class RootController {
     private Spinner<Integer> shuffleStepSpnr;
     @FXML
     private Canvas canvas;
+    @FXML
+    private MaterialDesignIconView mutedIcon;
+    @FXML
+    private MaterialDesignIconView unMutedIcon;
 
     public RootController(){}
 
@@ -45,6 +50,8 @@ public class RootController {
         shuffleStepSpnr.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
                 1, 10, 1));
 
+        unMutedIcon.setVisible(true);
+        mutedIcon.setVisible(false);
         ResourceManager.getSideSizeProperty().bind(sideSizeSpnr.valueProperty());
         sideSizeSpnr.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (sideSizeSpnr.getValue() == 7) {
@@ -211,6 +218,20 @@ public class RootController {
         for (Square square : ResourceManager.getSquares()) {
             square.moveToNumber(square.getInitialNumber(), ResourceManager.getSideSizeProperty().get());
         }
+    }
+
+    public void mute(MouseEvent event) {
+        ResourceManager.mute(true);
+        mutedIcon.setVisible(true);
+        unMutedIcon.setVisible(false);
+
+    }
+
+    public void unMute(MouseEvent event) {
+        ResourceManager.mute(false);
+        unMutedIcon.setVisible(true);
+        mutedIcon.setVisible(false);
+
     }
 
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
@@ -13,7 +14,7 @@
    <children>
       <StackPane fx:id="viewPane" prefHeight="720.0" prefWidth="720.0">
          <children>
-            <Canvas fx:id="canvas" height="720.0" onDragDropped="#mouseDragDropped" onDragOver="#mouseDragOver" onMouseClicked="#move" width="720.0"/>
+            <Canvas fx:id="canvas" height="720.0" onDragDropped="#mouseDragDropped" onDragOver="#mouseDragOver" onMouseClicked="#move" width="720.0" />
          </children></StackPane>
       <HBox prefHeight="59.0" prefWidth="750.0">
          <children>
@@ -47,11 +48,17 @@
                   <Insets left="20.0" />
                </HBox.margin>
             </VBox>
-            <Button fx:id="multiFuncBttn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#start" prefHeight="59.0" prefWidth="505.0" text="START">
+            <Button fx:id="multiFuncBttn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#start" prefHeight="59.0" prefWidth="500.0" text="START">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
             </Button>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <MaterialDesignIconView fx:id="mutedIcon" glyphName="VOLUME_OFF" onMouseClicked="#unMute" size="14" strokeType="OUTSIDE" strokeWidth="0.0" />
+                  <MaterialDesignIconView fx:id="unMutedIcon" glyphName="VOLUME_HIGH" onMouseClicked="#mute" size="14" strokeType="OUTSIDE" strokeWidth="0.0" />
+               </children>
+            </StackPane>
          </children>
          <VBox.margin>
             <Insets top="5.0" />

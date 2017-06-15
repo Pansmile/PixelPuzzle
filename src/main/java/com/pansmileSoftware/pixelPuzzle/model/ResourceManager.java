@@ -29,6 +29,7 @@ public class ResourceManager {
     private static MediaPlayer[] players;
     private static boolean[] isPlaying = new boolean[9];
     private static int previousNumber;
+    private static boolean mute;
 
 
     public static void loadImage(File file, int requestedWidth) throws IOException {
@@ -94,35 +95,40 @@ public class ResourceManager {
     }
 
     private static void playNumber(int number) {
-        int secondsToWait;
-        if (number == 8) {
-            secondsToWait = 7;
-        } else {
-            secondsToWait = 2;
-        }
+        if (!mute) {
+            int secondsToWait;
+            if (number == 8) {
+                secondsToWait = 7;
+            } else {
+                secondsToWait = 2;
+            }
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(secondsToWait), ae -> {
-            if (isPlaying[number]) {
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(secondsToWait), ae -> {
+                if (isPlaying[number]) {
+                    players[number].stop();
+                    players[number].seek(Duration.seconds(0));
+                    isPlaying[number] = false;
+                }
+
+            }));
+
+            if (!isPlaying[number]) {
+                players[number].play();
+                isPlaying[number] = true;
+                timeline.play();
+
+            } else {
                 players[number].stop();
                 players[number].seek(Duration.seconds(0));
                 isPlaying[number] = false;
+                playNumber(number);
             }
-
-        }));
-
-        if (!isPlaying[number]) {
-            players[number].play();
-            isPlaying[number] = true;
-            timeline.play();
-
-        } else {
-            players[number].stop();
-            players[number].seek(Duration.seconds(0));
-            isPlaying[number] = false;
-            playNumber(number);
         }
     }
 
+    public static void mute(boolean mute) {
+        ResourceManager.mute = mute;
+    }
     public static void setHasChanged(boolean hasChanged) {
         ResourceManager.hasChanged = hasChanged;
     }
