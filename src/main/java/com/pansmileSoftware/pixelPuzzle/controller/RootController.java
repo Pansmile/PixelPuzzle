@@ -4,14 +4,11 @@ import com.pansmileSoftware.pixelPuzzle.app.Puzzle;
 import com.pansmileSoftware.pixelPuzzle.model.ResourceManager;
 import com.pansmileSoftware.pixelPuzzle.model.Square;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.*;
@@ -19,13 +16,9 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -56,7 +49,7 @@ public class RootController {
         sideSizeSpnr.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (sideSizeSpnr.getValue() == 7) {
                 try {
-                    ResourceManager.scaleImage(721);
+                    ResourceManager.loadImage(null, 721);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -73,8 +66,10 @@ public class RootController {
         final Dragboard dragboard = dragEvent.getDragboard();
         if (dragboard.hasFiles()) {
             try {
-                InputStream file = new FileInputStream(dragboard.getFiles().get(0));
+                FileInputStream file = new FileInputStream(dragboard.getFiles().get(0));
+                ResourceManager.setImageChanged(true);
                 ResourceManager.loadImage(file, 720);
+
                 isStarted = false;
                 isDefaultImage = false;
                 draw();
@@ -212,7 +207,7 @@ public class RootController {
 
     private void moveAllBack() {
         for (Square square : ResourceManager.getSquares()) {
-            square.moveToNumber(square.getInitialNumber(), ResourceManager.getSideSizeProperty().get(), 1);
+            square.moveToNumber(square.getInitialNumber(), ResourceManager.getSideSizeProperty().get());
         }
     }
 

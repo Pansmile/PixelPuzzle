@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import com.pansmileSoftware.pixelPuzzle.model.ResourceManager;
 
+import java.io.InputStream;
+
 /**
  * This is the main application class.
  */
@@ -19,7 +21,9 @@ public class Puzzle extends Application{
         Parent root = loader.load();
         RootController controller = loader.getController();
 
-        ResourceManager.loadImage(Puzzle.class.getResourceAsStream("/images/0.png"), 720);
+        InputStream stream = Puzzle.class.getResourceAsStream("/images/0.png");
+
+        ResourceManager.loadImage(stream, 720);
         ResourceManager.initPlayers();
         controller.draw();
 

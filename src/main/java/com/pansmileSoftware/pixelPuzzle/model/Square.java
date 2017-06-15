@@ -9,12 +9,9 @@ import javafx.scene.image.WritableImage;
  */
 public class Square {
     private WritableImage image;
-    private double fullWidth;
     private double width;
     private final int initialNumber;
     private int currentNumber;
-    private double initialPositionX;
-    private double initialPositionY;
     private double positionX;
     private double positionY;
     private boolean isEmpty = false;
@@ -26,10 +23,9 @@ public class Square {
         initialNumber = number;
         currentNumber = initialNumber;
         width = image.getWidth();
-        fullWidth = width * sideSize;
         this.sideSize = sideSize;
 
-        moveToNumber(number, sideSize, 0);
+        moveToNumber(number, sideSize);
     }
 
     //Computing layout position of a square on canvas.
@@ -49,13 +45,9 @@ public class Square {
     }
 
     //Changing or setting position variables;
-    public void moveToNumber(int newNumber, int sideSize, int type) {
+    public void moveToNumber(int newNumber, int sideSize) {
         currentNumber = newNumber;
         double[] tmp = getXY(newNumber, sideSize);
-        if (type == 0) {
-            initialPositionX = tmp[0];
-            initialPositionY = tmp[1];
-        }
         positionX = tmp[0];
         positionY = tmp[1];
         bounds = new BoundingBox(positionX, positionY, width, width);
@@ -83,8 +75,8 @@ public class Square {
             int numberOfEmpty = emptySquare.getCurrentNumber();
             if (square.canBeMoved(numberOfEmpty, square.sideSize)) {
                 int squareNumber = square.getCurrentNumber();
-                square.moveToNumber(numberOfEmpty, square.sideSize, 1);
-                emptySquare.moveToNumber(squareNumber, square.sideSize, 1);
+                square.moveToNumber(numberOfEmpty, square.sideSize);
+                emptySquare.moveToNumber(squareNumber, square.sideSize);
             }
 
         }
@@ -101,7 +93,7 @@ public class Square {
         return image;
     }
 
-    private void setEmpty(boolean isEmpty) {
+    public void setEmpty(boolean isEmpty) {
         this.isEmpty = isEmpty;
     }
     public boolean isEmpty() {

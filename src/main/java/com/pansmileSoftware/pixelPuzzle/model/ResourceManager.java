@@ -11,6 +11,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
@@ -20,7 +21,8 @@ import java.util.Random;
  */
 public class ResourceManager {
     private static Image image;
-    private static InputStream file;
+    private static byte[] imageBytes;
+    private static boolean imageChanged;
     private static IntegerProperty sideSizeProperty = new SimpleIntegerProperty();
     private static int lastSideSize;
     private static Square[] squares;
@@ -28,15 +30,28 @@ public class ResourceManager {
     private static boolean[] isPlaying = new boolean[9];
     private static int previousNumber;
 
-    public static void loadImage(InputStream file, int requestedWidth) throws IOException {
-        ResourceManager.file = file;
-        image = new Image(file, requestedWidth, requestedWidth, false, false);
+    public static void loadImage(InputStream inputStream, int requestedWidth) throws IOException {
+        InputStream stream;
+        if (imageBytes == null || imageChanged) {
+            imageBytes = new byte[inputStream.available()];
+            inputStream.read(imageBytes);
+            imageChanged = false;
+        }
+        if (inputStream == null || inputStream.available() == 0) {
+            stream = new ByteArrayInputStream(imageBytes);
+        } else {
+            stream = inputStream;
+        }
+        int finalWidthHeight;
+        if (sideSizeProperty.get() == 7) {
+            finalWidthHeight = 721;
+        } else {
+            finalWidthHeight = requestedWidth;
+        }
+
+        image = new Image(stream, finalWidthHeight, finalWidthHeight, false, false);
         squares = SquaresCreator.createSquares(image,sideSizeProperty.get());
         lastSideSize = sideSizeProperty.get();
-    }
-
-    public static void scaleImage(int requestedWidth) throws IOException {
-        loadImage(file, requestedWidth);
     }
 
     public static Image getImage() throws NullPointerException {
@@ -107,6 +122,10 @@ public class ResourceManager {
             isPlaying[number] = false;
             playNumber(number);
         }
+    }
+
+    public static void setImageChanged(boolean hasChanged) {
+        imageChanged = hasChanged;
     }
 
     public static IntegerProperty getSideSizeProperty() {
