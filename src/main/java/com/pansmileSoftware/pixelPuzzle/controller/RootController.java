@@ -72,6 +72,7 @@ public class RootController {
 
                 isStarted = false;
                 isDefaultImage = false;
+                ResourceManager.setHasChanged(true);
                 draw();
 
             } catch (IOException e) {
@@ -80,6 +81,7 @@ public class RootController {
             dragEvent.setDropCompleted(true);
         }
         dragEvent.consume();
+
     }
 
     @FXML

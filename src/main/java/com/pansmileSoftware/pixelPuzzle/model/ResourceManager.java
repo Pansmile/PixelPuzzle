@@ -22,6 +22,7 @@ public class ResourceManager {
     private static Image image;
     private static File imageFile;
     private static boolean isDefaultImage = true;
+    private static boolean hasChanged = false;
     private static IntegerProperty sideSizeProperty = new SimpleIntegerProperty();
     private static int lastSideSize;
     private static Square[] squares;
@@ -41,7 +42,8 @@ public class ResourceManager {
             InputStream stream = Puzzle.class.getResourceAsStream("/images/0.png");
             image = new Image(stream, finalWidthHeight, finalWidthHeight, false, false);
         } else {
-            if (imageFile == null) {
+            if (imageFile == null || (hasChanged && file != null)) {
+                hasChanged = false;
                 imageFile = file;
             }
             image = new Image(imageFile.toURI().toString(), finalWidthHeight, finalWidthHeight, false, false);
@@ -121,6 +123,9 @@ public class ResourceManager {
         }
     }
 
+    public static void setHasChanged(boolean hasChanged) {
+        ResourceManager.hasChanged = hasChanged;
+    }
     public static void setIsDefaultImage(boolean isDefault) {
         isDefaultImage = isDefault;
     }
