@@ -21,8 +21,6 @@ import java.util.Random;
 public class ResourceManager {
     private static Image image;
     private static File imageFile;
-    private static byte[] imageBytes;
-    private static boolean imageChanged;
     private static boolean isDefaultImage = true;
     private static IntegerProperty sideSizeProperty = new SimpleIntegerProperty();
     private static int lastSideSize;
@@ -123,9 +121,6 @@ public class ResourceManager {
         }
     }
 
-    public static void setImageChanged(boolean hasChanged) {
-        imageChanged = hasChanged;
-    }
     public static void setIsDefaultImage(boolean isDefault) {
         isDefaultImage = isDefault;
     }

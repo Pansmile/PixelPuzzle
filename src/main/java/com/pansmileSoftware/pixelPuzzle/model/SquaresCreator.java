@@ -1,10 +1,8 @@
 package com.pansmileSoftware.pixelPuzzle.model;
 
-
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
-
 
 /**
  * This class creates an Array of Squares which keeps all data of puzzle's parts.

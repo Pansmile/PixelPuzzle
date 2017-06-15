@@ -67,7 +67,6 @@ public class RootController {
         if (dragboard.hasFiles()) {
             try {
                 File file = dragboard.getFiles().get(0);
-                ResourceManager.setImageChanged(true);
                 ResourceManager.setIsDefaultImage(false);
                 ResourceManager.loadImage(file, 720);
 
