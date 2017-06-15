@@ -17,7 +17,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,8 +66,9 @@ public class RootController {
         final Dragboard dragboard = dragEvent.getDragboard();
         if (dragboard.hasFiles()) {
             try {
-                FileInputStream file = new FileInputStream(dragboard.getFiles().get(0));
+                File file = dragboard.getFiles().get(0);
                 ResourceManager.setImageChanged(true);
+                ResourceManager.setIsDefaultImage(false);
                 ResourceManager.loadImage(file, 720);
 
                 isStarted = false;

@@ -23,7 +23,7 @@ public class Puzzle extends Application{
 
         InputStream stream = Puzzle.class.getResourceAsStream("/images/0.png");
 
-        ResourceManager.loadImage(stream, 720);
+        ResourceManager.loadImage(null, 720);
         ResourceManager.initPlayers();
         controller.draw();
 
